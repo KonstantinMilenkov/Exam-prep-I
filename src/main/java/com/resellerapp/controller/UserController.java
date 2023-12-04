@@ -1,7 +1,8 @@
 package com.resellerapp.controller;
 
-import com.resellerapp.model.dto.UserLoginBindingModel;
-import com.resellerapp.model.dto.UserRegisterBindingModel;
+import com.resellerapp.model.UserLoginBindingModel;
+import com.resellerapp.model.UserRegisterBindingModel;
+import com.resellerapp.service.LoggedUser;
 import com.resellerapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UserController {
     private final UserService userService;
+    private final LoggedUser loggedUser;
 
-    public UserController(UserService userService) {
+
+    public UserController(UserService userService, LoggedUser loggedUser) {
         this.userService = userService;
+        this.loggedUser = loggedUser;
     }
 
     @GetMapping("/login")
@@ -43,5 +47,14 @@ public class UserController {
         String view = isRegister ? "redirect:/login" : "register";
 
         return new ModelAndView(view);
+    }
+    @PostMapping("/logout")
+    public ModelAndView logout() {
+        if (!loggedUser.isLogged()) {
+            return new ModelAndView("redirect:/home");
+        }
+
+        userService.logout();
+        return new ModelAndView("redirect:/");
     }
 }

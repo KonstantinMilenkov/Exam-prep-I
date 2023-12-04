@@ -1,4 +1,4 @@
-package com.resellerapp.model.dto;
+package com.resellerapp.model;
 
 import org.hibernate.validator.constraints.Length;
 

@@ -1,7 +1,7 @@
 package com.resellerapp.service.impl;
 
-import com.resellerapp.model.dto.UserLoginBindingModel;
-import com.resellerapp.model.dto.UserRegisterBindingModel;
+import com.resellerapp.model.UserLoginBindingModel;
+import com.resellerapp.model.UserRegisterBindingModel;
 import com.resellerapp.model.entity.User;
 import com.resellerapp.repository.UserRepository;
 import com.resellerapp.service.LoggedUser;
@@ -55,6 +55,11 @@ public class UserServiceImpl implements UserService {
         }
 
         return false;
+    }
+    @Override
+    public void logout() {
+        loggedUser.setUsername(null);
+        loggedUser.setLogged(false);
     }
     private User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
