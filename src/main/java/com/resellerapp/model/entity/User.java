@@ -7,19 +7,20 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User extends BaseEntity{
-    @Column(unique = true, nullable = false)
+
     @Length(min = 3, max = 20)
+    @Column(unique = true, nullable = false)
     private String username;
-    @NotNull
+
+    @Column(nullable = false)
     private String password;
+
     @Email
     @Column(unique = true, nullable = false)
     private String email;
