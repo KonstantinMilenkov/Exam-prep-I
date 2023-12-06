@@ -1,4 +1,4 @@
-package com.resellerapp.model;
+package com.resellerapp.model.binding;
 
 import com.resellerapp.model.enums.ConditionName;
 

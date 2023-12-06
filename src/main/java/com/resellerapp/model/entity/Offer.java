@@ -1,7 +1,7 @@
 package com.resellerapp.model.entity;
 
 
-import com.resellerapp.model.OfferCreateBindingModel;
+import com.resellerapp.model.binding.OfferCreateBindingModel;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;

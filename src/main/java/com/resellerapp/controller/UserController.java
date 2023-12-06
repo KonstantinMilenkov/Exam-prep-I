@@ -1,13 +1,17 @@
 package com.resellerapp.controller;
 
-import com.resellerapp.model.UserLoginBindingModel;
-import com.resellerapp.model.UserRegisterBindingModel;
+import com.resellerapp.model.binding.UserLoginBindingModel;
+import com.resellerapp.model.binding.UserRegisterBindingModel;
 import com.resellerapp.service.LoggedUser;
 import com.resellerapp.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Controller
 public class UserController {
@@ -22,10 +26,26 @@ public class UserController {
 
     @GetMapping("/login")
     public ModelAndView login(){
+        if (loggedUser.isLogged()) {
+            return new ModelAndView("redirect:/home");
+        }
         return new ModelAndView("login");
     }
     @PostMapping("/login")
-    public ModelAndView login(UserLoginBindingModel userLoginBindingModel){
+    public ModelAndView login(
+            @Valid @ModelAttribute("userLoginBindingModel")
+                                  UserLoginBindingModel userLoginBindingModel,
+                              BindingResult bindingResult){
+        if (loggedUser.isLogged()) {
+            return new ModelAndView("redirect:/home");
+        }
+
+        boolean hasErrors = bindingResult.hasErrors();
+
+        if (hasErrors) {
+
+        }
+
         boolean isLogged = userService.login(userLoginBindingModel);
 
         String view = isLogged ? "redirect:/home" : "login";
@@ -36,25 +56,35 @@ public class UserController {
 
     @GetMapping("/register")
     public ModelAndView register(){
+        if (loggedUser.isLogged()) {
+            return new ModelAndView("redirect:/home");
+        }
+
         return new ModelAndView("register");
     }
 
 
     @PostMapping("/register")
     public ModelAndView register(UserRegisterBindingModel userRegisterBindingModel){
+        if (loggedUser.isLogged()) {
+            return new ModelAndView("redirect:/home");
+        }
+
         boolean isRegister = userService.register(userRegisterBindingModel);
 
         String view = isRegister ? "redirect:/login" : "register";
 
         return new ModelAndView(view);
     }
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public ModelAndView logout() {
+
         if (!loggedUser.isLogged()) {
             return new ModelAndView("redirect:/home");
         }
 
         userService.logout();
+
         return new ModelAndView("redirect:/");
     }
 }

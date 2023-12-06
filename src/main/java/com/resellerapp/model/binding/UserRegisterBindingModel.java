@@ -1,4 +1,4 @@
-package com.resellerapp.model;
+package com.resellerapp.model.binding;
 
 import org.hibernate.validator.constraints.Length;
 

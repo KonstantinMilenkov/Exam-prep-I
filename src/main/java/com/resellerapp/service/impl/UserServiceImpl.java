@@ -1,7 +1,7 @@
 package com.resellerapp.service.impl;
 
-import com.resellerapp.model.UserLoginBindingModel;
-import com.resellerapp.model.UserRegisterBindingModel;
+import com.resellerapp.model.binding.UserLoginBindingModel;
+import com.resellerapp.model.binding.UserRegisterBindingModel;
 import com.resellerapp.model.entity.User;
 import com.resellerapp.repository.UserRepository;
 import com.resellerapp.service.LoggedUser;

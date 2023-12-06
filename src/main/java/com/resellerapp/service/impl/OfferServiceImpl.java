@@ -1,6 +1,6 @@
 package com.resellerapp.service.impl;
 
-import com.resellerapp.model.OfferCreateBindingModel;
+import com.resellerapp.model.binding.OfferCreateBindingModel;
 import com.resellerapp.model.dto.BoughtOffersDTO;
 import com.resellerapp.model.dto.MyOfferDTO;
 import com.resellerapp.model.dto.OfferHomeDTO;
@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -43,11 +45,11 @@ public class OfferServiceImpl implements OfferService {
         for (Offer offer : offers) {
             String loggedUsername = loggedUser.getUsername();
 
-            if (offer.getCreatedBy().getUsername().equals(loggedUsername)) {
+            if (offer.getBoughtBy() == null && offer.getCreatedBy().getUsername().equals(loggedUsername)) {
                 myOffers.add(new MyOfferDTO(offer));
-            } else if (offer.getBoughtBy().getUsername().equals(loggedUsername)) {
+            } else if (offer.getBoughtBy() != null && offer.getBoughtBy().getUsername().equals(loggedUsername)) {
                 boughtOffers.add(new BoughtOffersDTO(offer));
-            } else {
+            } else if (offer.getBoughtBy() == null){
                 otherOffers.add(new OtherOffersDTO(offer));
             }
         }
@@ -69,5 +71,19 @@ public class OfferServiceImpl implements OfferService {
         }
 
         return false;
+    }
+
+    @Override
+    public void buy(UUID id) {
+        Optional<Offer> optionalOffer = offerRepository.findById(id);
+        if (optionalOffer.isPresent()){
+            User user = userRepository.findByUsername(loggedUser.getUsername());
+            Offer offer = optionalOffer.get();
+
+            offer.setBoughtBy(user);
+
+
+            offerRepository.save(offer);
+        }
     }
 }

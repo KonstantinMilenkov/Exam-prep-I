@@ -1,7 +1,7 @@
 package com.resellerapp.service;
 
-import com.resellerapp.model.UserLoginBindingModel;
-import com.resellerapp.model.UserRegisterBindingModel;
+import com.resellerapp.model.binding.UserLoginBindingModel;
+import com.resellerapp.model.binding.UserRegisterBindingModel;
 
 public interface UserService {
     boolean register(UserRegisterBindingModel userRegisterBindingModel);
